@@ -149,7 +149,16 @@ class Dungeon(
         rooms.add(room)
     }
 
-
+    fun removeConnectionlessRoom() {
+        rooms.filter { room ->
+            room.wall.all { get(it) == State.WALL }
+        }.forEach {
+            rooms.remove(it)
+            it.forEach { l ->
+                set(l, State.WALL)
+            }
+        }
+    }
 
     private fun removeDeadEndFun(l: Location, limit: Data<Int>): Boolean? {
         if (l.x < 1

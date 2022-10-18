@@ -1,12 +1,30 @@
 package top.e404.dungeon_generator.path
 
+/**
+ * 地牢生成器, 填充地牢
+ *
+ * @property dungeonWidth 地牢宽度
+ * @property dungeonHeight 地牢高度
+ * @property roomWidth 房间宽度范围
+ * @property roomHeight 房间高度范围
+ * @property roomTry 生成房间的尝试次数
+ * @property pathTry 生成路径的尝试次数
+ * @property pathTurnChance 路径生成时尝试转弯的几率
+ * @property pathStep 路径生成时的最大步数
+ * @property pathStepFailLimit 路径生成时每一步的最大失败次数
+ * @property pathMagic 路径生成时的参数
+ */
 class Generator(
     val dungeonWidth: Int,
     val dungeonHeight: Int,
     val roomWidth: IntRange = 10..25,
     val roomHeight: IntRange = 10..25,
     val roomTry: Int = 200,
-    val pathTry: Int = 200
+    val pathTry: Int = 200,
+    val pathTurnChance: Int = 4,
+    val pathStep: Int = 100,
+    val pathStepFailLimit: Int = 500,
+    val pathMagic: Int = 4
 ) {
     val dungeon = Dungeon(dungeonWidth, dungeonHeight)
 
@@ -20,19 +38,17 @@ class Generator(
         repeat(pathTry) {
             val builder = PathBuilder(
                 dungeon = dungeon,
-                turnChance = 4,
-                step = 100,
-                stepFailLimit = 500,
+                turnChance = pathTurnChance,
+                step = pathStep,
+                stepFailLimit = pathStepFailLimit,
                 location = dungeon.rooms[i++ % dungeon.rooms.size].wall.random(),
-                magic = 4
+                magic = pathMagic
             )
             dungeon[builder.location] = State.PATH
             builder.start()
             builder.check()
-            val success = if (builder.fail) "fail" else "success"
-            val paths = builder.path.joinToString(", ") { (x, y) -> "$x-$y" }
-            println("$success: $it [$paths]")
         }
         dungeon.removeDeadEnd()
+        dungeon.removeConnectionlessRoom()
     }
 }
