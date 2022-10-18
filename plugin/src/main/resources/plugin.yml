@@ -1,0 +1,17 @@
+name: EDungeonGenerator
+version: "${version}"
+main: top.e404.edungeongenerator.EDungeonGenerator
+api-version: 1.13
+depend:
+  - WorldEdit
+authors:
+  - 404E
+commands:
+  edungeongenerator:
+    description: 插件主命令
+    aliases:
+      - edg
+permissions:
+  edungeongenerator.admin:
+    default: op
+    description: 允许使用插件指令

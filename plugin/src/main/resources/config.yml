@@ -1,0 +1,16 @@
+# 若设置为true则会在控制台输出debug信息
+debug: false
+
+# 同步的时间间隔, 单位刻
+# 除了定时器同步之外还会在玩家上下线时触发同步
+duration: 1200
+
+# 每次推送的时间间隔, 单位刻
+push: 6000
+
+url: http://sss.sss.sss/sss
+
+# 需要同步的papi
+papi:
+  - player_name
+  - player_level

@@ -1,19 +1,19 @@
 package top.e404.dungeon_generator.path
 
 data class Room(
-    val x: Int,
-    val y: Int,
-    val w: Int,
-    val h: Int
+    val left: Int,
+    val top: Int,
+    val length: Int,
+    val width: Int
 ) {
-    fun isOverlap(other: Room) = other.x + other.w >= x - 1
-            && other.y + other.h >= y - 1
-            && x + w >= other.x - 1
-            && y + h >= other.y - 1
+    fun isOverlap(other: Room) = other.left + other.length >= left - 1
+            && other.top + other.width >= top - 1
+            && left + length >= other.left - 1
+            && top + width >= other.top - 1
 
-    val blocks by lazy {
+    val blocks: List<Location> by lazy {
         val list = ArrayList<Location>()
-        for (iy in y until y + h) for (ix in x until x + w) {
+        for (iy in top until top + width) for (ix in left until left + length) {
             list.add(Location(ix, iy))
         }
         list
@@ -21,23 +21,23 @@ data class Room(
 
     fun forEach(block: (location: Location) -> Unit) = blocks.forEach(block)
 
-    val wall by lazy {
+    val wall: List<Location> by lazy {
         val list = ArrayList<Location>()
-        for (ix in x until x + w) {
-            list.add(Location(ix, y - 1))
-            list.add(Location(ix, y + h))
+        for (ix in left until left + length) {
+            list.add(Location(ix, top - 1))
+            list.add(Location(ix, top + width))
         }
-        for (iy in y until y + h) {
-            list.add(Location(x - 1, iy))
-            list.add(Location(x + w, iy))
+        for (iy in top until top + width) {
+            list.add(Location(left - 1, iy))
+            list.add(Location(left + length, iy))
         }
         list
     }
 
     fun forEachWall(block: (location: Location) -> Unit) = wall.forEach(block)
 
-    operator fun contains(location: Location) = location.x >= x
-            && location.x < x + w
-            && location.y >= y
-            && location.y < y + h
+    operator fun contains(location: Location) = location.x >= left
+            && location.x < left + length
+            && location.y >= top
+            && location.y < top + width
 }

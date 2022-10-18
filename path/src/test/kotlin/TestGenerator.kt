@@ -9,8 +9,8 @@ class TestGenerator {
     @Test
     fun t() {
         val g = Generator(
+            dungeonLength = 400,
             dungeonWidth = 400,
-            dungeonHeight = 400,
             roomWidth = 10..20,
             roomHeight = 10..20,
             roomTry = 400,

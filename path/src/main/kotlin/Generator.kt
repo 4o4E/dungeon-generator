@@ -3,8 +3,8 @@ package top.e404.dungeon_generator.path
 /**
  * 地牢生成器, 填充地牢
  *
+ * @property dungeonLength 地牢长度
  * @property dungeonWidth 地牢宽度
- * @property dungeonHeight 地牢高度
  * @property roomWidth 房间宽度范围
  * @property roomHeight 房间高度范围
  * @property roomTry 生成房间的尝试次数
@@ -14,8 +14,8 @@ package top.e404.dungeon_generator.path
  * @property pathStepFailLimit 路径生成时每一步的最大失败次数
  */
 class Generator(
+    val dungeonLength: Int,
     val dungeonWidth: Int,
-    val dungeonHeight: Int,
     val roomWidth: IntRange = 10..25,
     val roomHeight: IntRange = 10..25,
     val roomTry: Int = 200,
@@ -24,7 +24,7 @@ class Generator(
     val pathStep: Int = 100,
     val pathStepFailLimit: Int = 500
 ) {
-    val dungeon = Dungeon(dungeonWidth, dungeonHeight)
+    val dungeon = Dungeon(dungeonLength, dungeonWidth)
 
     /**
      * 生成图片

@@ -1,3 +1,5 @@
-
 rootProject.name = "dungeon-generator"
-include("path")
+include(
+    "path",
+    "plugin",
+)

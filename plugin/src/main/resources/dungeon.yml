@@ -1,0 +1,24 @@
+example:
+  # 地牢尺寸
+  dungeon_length: 100
+  dungeon_width: 100
+  dungeon_height: 30
+  # 地牢顶部预留厚度
+  dungeon_top: 3
+  # 地牢底部预留厚度
+  dungeon_bottom: 3
+  # 房间尺寸
+  room_length: 10..15
+  room_width: 10..15
+  room_height: 5..8
+  # 生成房间的尝试次数
+  room_try: 200
+  # 生成路径的尝试次数
+  path_try: 200
+  # 路径生成时尝试转弯的几率
+  # 实际几率为 1 / (turnChance + 1)
+  path_turn_chance: 4
+  # 路径生成时的最大步数
+  path_step: 100
+  # 路径生成时每一步的最大失败次数
+  path_step_fail_limit: 500

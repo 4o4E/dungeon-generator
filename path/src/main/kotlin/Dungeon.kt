@@ -4,39 +4,39 @@ import java.awt.image.BufferedImage
 import kotlin.random.Random
 
 class Dungeon(
+    val length: Int,
     val width: Int,
-    val height: Int,
     val padding: Int = 5,
     val deadEndLimit: Int = 20,
     val deadEndRecursionLimit: Int = 10,
 ) {
-    val array = Array(width * height) { State.WALL }
+    val array = Array(length * width) { State.WALL }
     val rooms = mutableListOf<Room>()
 
     operator fun get(location: Location) = get(location.x, location.y)
 
-    operator fun get(x: Int, y: Int) = array[x + y * width]
+    operator fun get(x: Int, y: Int) = array[x + y * length]
 
     operator fun set(location: Location, state: State) = set(location.x, location.y, state)
 
     operator fun set(x: Int, y: Int, state: State) {
-        array[x + y * width] = state
+        array[x + y * length] = state
     }
 
-    operator fun contains(location: Location) = location.x in 0 until width
-            && location.y in 0 until height
+    operator fun contains(location: Location) = location.x in 0 until length
+            && location.y in 0 until width
 
-    fun containsInternal(l: Location) = l.x in padding until width - padding
-            && l.y in padding until height - padding
+    fun containsInternal(l: Location) = l.x in padding until length - padding
+            && l.y in padding until width - padding
 
     fun forEach(block: (x: Int, y: Int, s: State) -> Unit) {
-        for (y in 0 until height) for (x in 0 until width) {
+        for (y in 0 until width) for (x in 0 until length) {
             block(x, y, get(x, y))
         }
     }
 
     fun forEachInternal(block: (x: Int, y: Int, s: State) -> Unit) {
-        for (y in padding until height - padding) for (x in padding until width - padding) {
+        for (y in padding until width - padding) for (x in padding until length - padding) {
             block(x, y, get(x, y))
         }
     }
@@ -128,22 +128,29 @@ class Dungeon(
     /**
      * 生成新房间
      */
-    private fun newRoom(roomWidth: IntRange, roomHeight: IntRange): Room {
+    private fun newRoom(
+        roomLength: IntRange,
+        roomWidth: IntRange
+    ): Room {
+        val l = roomLength.random()
         val w = roomWidth.random()
-        val h = roomHeight.random()
         var x: Int
         var y: Int
         do {
-            x = Random.nextInt(1, width - w - 1)
-            y = Random.nextInt(1, height - h - 1)
+            x = Random.nextInt(1, length - l - 1)
+            y = Random.nextInt(1, width - w - 1)
         } while (x < 3 && y < 3)
-        return Room(x, y, w, h)
+        return Room(x, y, l, w)
     }
 
     /**
      * 生成房间
      */
-    fun genRoom(roomTry: Int, roomWidth: IntRange, roomHeight: IntRange) = repeat(roomTry) {
+    fun genRoom(
+        roomTry: Int,
+        roomWidth: IntRange,
+        roomHeight: IntRange
+    ) = repeat(roomTry) {
         val room = newRoom(roomWidth, roomHeight)
         if (rooms.any { it.isOverlap(room) }) return@repeat
         rooms.add(room)
@@ -160,11 +167,14 @@ class Dungeon(
         }
     }
 
-    private fun removeDeadEndFun(l: Location, limit: Data<Int>): Boolean? {
+    private fun removeDeadEndFun(
+        l: Location,
+        limit: Data<Int>
+    ): Boolean? {
         if (l.x < 1
             || l.y < 1
-            || l.x >= width - 1
-            || l.y >= height - 1
+            || l.x >= length - 1
+            || l.y >= width - 1
         ) return false
         if (countRound4(l) { it == State.WALL } < 3) return false
         limit.data++
@@ -198,8 +208,8 @@ class Dungeon(
      * 生成图片
      */
     fun toImage(): BufferedImage {
-        val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
-        for (y in 0 until height) for (x in 0 until width) {
+        val image = BufferedImage(length, width, BufferedImage.TYPE_INT_RGB)
+        for (y in 0 until width) for (x in 0 until length) {
             image.setRGB(x, y, get(x, y).color)
         }
         return image
