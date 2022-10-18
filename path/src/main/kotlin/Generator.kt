@@ -12,7 +12,6 @@ package top.e404.dungeon_generator.path
  * @property pathTurnChance 路径生成时尝试转弯的几率
  * @property pathStep 路径生成时的最大步数
  * @property pathStepFailLimit 路径生成时每一步的最大失败次数
- * @property pathMagic 路径生成时的参数
  */
 class Generator(
     val dungeonWidth: Int,
@@ -23,8 +22,7 @@ class Generator(
     val pathTry: Int = 200,
     val pathTurnChance: Int = 4,
     val pathStep: Int = 100,
-    val pathStepFailLimit: Int = 500,
-    val pathMagic: Int = 4
+    val pathStepFailLimit: Int = 500
 ) {
     val dungeon = Dungeon(dungeonWidth, dungeonHeight)
 
@@ -41,8 +39,7 @@ class Generator(
                 turnChance = pathTurnChance,
                 step = pathStep,
                 stepFailLimit = pathStepFailLimit,
-                location = dungeon.rooms[i++ % dungeon.rooms.size].wall.random(),
-                magic = pathMagic
+                location = dungeon.rooms[i++ % dungeon.rooms.size].wall.random()
             )
             dungeon[builder.location] = State.PATH
             builder.start()

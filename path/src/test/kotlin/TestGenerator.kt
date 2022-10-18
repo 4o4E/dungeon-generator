@@ -9,12 +9,15 @@ class TestGenerator {
     @Test
     fun t() {
         val g = Generator(
-            dungeonWidth = 100,
-            dungeonHeight = 100,
+            dungeonWidth = 400,
+            dungeonHeight = 400,
             roomWidth = 10..20,
             roomHeight = 10..20,
-            roomTry = 100,
-            pathTry = 300
+            roomTry = 400,
+            pathTry = 1600,
+            pathTurnChance = 4,
+            pathStep = 100,
+            pathStepFailLimit = 500
         )
         g.generator()
         ImageIO.write(g.dungeon.toImage(), "png", File("out.png"))

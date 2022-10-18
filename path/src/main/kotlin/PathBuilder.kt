@@ -10,15 +10,13 @@ import kotlin.random.Random
  * @property step 最大步数
  * @property stepFailLimit 每一步允许的最多失败次数 *
  * @property location 开始的点
- * @property magic 神奇的参数
  */
 class PathBuilder(
     val dungeon: Dungeon,
     val turnChance: Int,
     var step: Int,
     val stepFailLimit: Int = 500,
-    val location: Location,
-    val magic: Int = 5
+    val location: Location
 ) {
     var direction = Direction.RIGHT
     var lastDirection = Direction.RIGHT
@@ -56,7 +54,7 @@ class PathBuilder(
             if (dungeon.containsInternal(location)
                 && dungeon.countRound8(location) {
                     it == State.WALL
-                } > magic
+                } > 4
             ) break
             undo()
             if (failCount++ > stepFailLimit) return
