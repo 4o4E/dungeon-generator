@@ -6,7 +6,7 @@ class Generator(
     val roomWidth: IntRange = 10..25,
     val roomHeight: IntRange = 10..25,
     val roomTry: Int = 200,
-    val pathTry: Int = 20
+    val pathTry: Int = 200
 ) {
     val dungeon = Dungeon(dungeonWidth, dungeonHeight)
 
@@ -18,13 +18,21 @@ class Generator(
         dungeon.rooms.forEach { dungeon.fill(it) }
         var i = 0
         repeat(pathTry) {
-            println(it)
-            PathBuilder(
+            val builder = PathBuilder(
                 dungeon = dungeon,
-                turnChance = 2,
+                turnChance = 4,
                 step = 100,
-                room = dungeon.rooms[i++ % dungeon.rooms.size]
-            ).run()
+                stepFailLimit = 500,
+                location = dungeon.rooms[i++ % dungeon.rooms.size].wall.random(),
+                magic = 4
+            )
+            dungeon[builder.location] = State.PATH
+            builder.start()
+            builder.check()
+            val success = if (builder.fail) "fail" else "success"
+            val paths = builder.path.joinToString(", ") { (x, y) -> "$x-$y" }
+            println("$success: $it [$paths]")
         }
+        dungeon.removeDeadEnd()
     }
 }

@@ -23,13 +23,13 @@ data class Room(
 
     val wall by lazy {
         val list = ArrayList<Location>()
-        for (iy in y - 1 until y + h + 1) {
-            list.add(Location(x, iy))
-            list.add(Location(x + w, iy))
+        for (ix in x until x + w) {
+            list.add(Location(ix, y - 1))
+            list.add(Location(ix, y + h))
         }
-        for (ix in x + 1 until x + w - 1) {
-            list.add(Location(ix, y))
-            list.add(Location(ix, y))
+        for (iy in y until y + h) {
+            list.add(Location(x - 1, iy))
+            list.add(Location(x + w, iy))
         }
         list
     }

@@ -3,7 +3,13 @@ package top.e404.dungeon_generator.path
 import java.awt.image.BufferedImage
 import kotlin.random.Random
 
-class Dungeon(val width: Int, val height: Int) {
+class Dungeon(
+    val width: Int,
+    val height: Int,
+    val padding: Int = 5,
+    val deadEndLimit: Int = 20,
+    val deadEndRecursionLimit: Int = 10,
+) {
     val array = Array(width * height) { State.WALL }
     val rooms = mutableListOf<Room>()
 
@@ -20,11 +26,17 @@ class Dungeon(val width: Int, val height: Int) {
     operator fun contains(location: Location) = location.x in 0 until width
             && location.y in 0 until height
 
-    fun containsInternal(l: Location) = l.x in 1 until width - 1
-            && l.y in 1 until height - 1
+    fun containsInternal(l: Location) = l.x in padding until width - padding
+            && l.y in padding until height - padding
 
     fun forEach(block: (x: Int, y: Int, s: State) -> Unit) {
         for (y in 0 until height) for (x in 0 until width) {
+            block(x, y, get(x, y))
+        }
+    }
+
+    fun forEachInternal(block: (x: Int, y: Int, s: State) -> Unit) {
+        for (y in padding until height - padding) for (x in padding until width - padding) {
             block(x, y, get(x, y))
         }
     }
@@ -135,6 +147,42 @@ class Dungeon(val width: Int, val height: Int) {
         val room = newRoom(roomWidth, roomHeight)
         if (rooms.any { it.isOverlap(room) }) return@repeat
         rooms.add(room)
+    }
+
+
+
+    private fun removeDeadEndFun(l: Location, limit: Data<Int>): Boolean? {
+        if (l.x < 1
+            || l.y < 1
+            || l.x >= width - 1
+            || l.y >= height - 1
+        ) return false
+        if (countRound4(l) { it == State.WALL } < 3) return false
+        limit.data++
+        if (limit.data > deadEndRecursionLimit) return null
+        this[l] = State.WALL
+        if (removeDeadEndFun(l.copy().plus(-1, 0), limit) == null) return null
+        if (removeDeadEndFun(l.copy().plus(1, 0), limit) == null) return null
+        if (removeDeadEndFun(l.copy().plus(0, -1), limit) == null) return null
+        if (removeDeadEndFun(l.copy().plus(0, 1), limit) == null) return null
+        return true
+    }
+
+    /**
+     * 移除死路
+     */
+    fun removeDeadEnd() {
+        repeat(deadEndLimit) {
+            forEachInternal { x, y, s ->
+                if (s != State.PATH) return@forEachInternal
+                val l = Location(x, y)
+                if (countRound4(l) { it == State.WALL } >= 3) {
+                    removeDeadEndFun(l, Data(0))
+
+                }
+                //set(l, State.WALL)
+            }
+        }
     }
 
     /**
