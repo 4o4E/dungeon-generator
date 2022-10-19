@@ -46,17 +46,25 @@ object DungeonGenerator {
                 )
             }
         }
+        val wall = 5
         // 墙壁
         for (x in 0 until cfg.dungeonLength) for (z in 0 until cfg.dungeonWidth) {
-            if (get(Location(x,z)) != State.WALL) continue
-            clipboard.setBlock(
-                BlockVector3.at(x, cfg.dungeonBottom, z),
-                BukkitAdapter.asBlockState(ItemStack(Material.MOSSY_STONE_BRICKS))
-            )
-            clipboard.setBlock(
-                BlockVector3.at(x, cfg.dungeonBottom + 1, z),
-                BukkitAdapter.asBlockState(ItemStack(Material.MOSSY_STONE_BRICKS))
-            )
+            if (get(Location(x, z)) != State.WALL) continue
+            for (y in 0 until wall) {
+                clipboard.setBlock(
+                    BlockVector3.at(x, cfg.dungeonBottom + y, z),
+                    BukkitAdapter.asBlockState(ItemStack(Material.MOSSY_STONE_BRICKS))
+                )
+            }
+        }
+        // 顶
+        for (y in 0 until cfg.dungeonBottom) {
+            for (x in 0 until cfg.dungeonLength) for (z in 0 until cfg.dungeonWidth) {
+                clipboard.setBlock(
+                    BlockVector3.at(x, cfg.dungeonBottom + y + wall, z),
+                    BukkitAdapter.asBlockState(ItemStack(Material.MOSSY_STONE_BRICKS))
+                )
+            }
         }
         return clipboard
     }
