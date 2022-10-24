@@ -28,6 +28,9 @@ object DungeonGenerator {
             cfg.pathStepFailLimit
         )
         g.generator()
+        g.dungeon.rooms.forEach {
+            it.height = cfg.roomHeight.random()
+        }
         return g.dungeon
     }
 
@@ -37,8 +40,8 @@ object DungeonGenerator {
             BlockVector3.at(cfg.dungeonLength, cfg.dungeonHeight, cfg.dungeonWidth)
         )
         val clipboard = BlockArrayClipboard(region)
-        // 底
-        for (y in 0 until cfg.dungeonBottom) {
+        // 全部填充
+        for (y in 0 until cfg.dungeonBottom + cfg.dungeonTop + cfg.roomHeight.last) {
             for (x in 0 until cfg.dungeonLength) for (z in 0 until cfg.dungeonWidth) {
                 clipboard.setBlock(
                     BlockVector3.at(x, y, z),

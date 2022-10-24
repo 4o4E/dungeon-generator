@@ -1,16 +1,9 @@
 # 若设置为true则会在控制台输出debug信息
 debug: false
 
-# 同步的时间间隔, 单位刻
-# 除了定时器同步之外还会在玩家上下线时触发同步
-duration: 1200
+# 游戏所在的世界名字, 若不存在会自动创建
+world: dungeon
 
-# 每次推送的时间间隔, 单位刻
-push: 6000
-
-url: http://sss.sss.sss/sss
-
-# 需要同步的papi
-papi:
-  - player_name
-  - player_level
+# 地图块半径
+# 必须比最大的地牢的半径大
+radius: 200

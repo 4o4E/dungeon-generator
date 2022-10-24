@@ -1,0 +1,10 @@
+# 地牢房间所使用的怪物生成表
+# 包含生成的怪物种类及其权重(总数量由地牢大小确定)
+# 在dungeon.yml中引用此配置文件的内容
+example_monster:
+  - type: example_zombie
+    amount: 10..20
+    weight: 10
+  - type: example_skeleton
+    amount: 1..5
+    weight: 1

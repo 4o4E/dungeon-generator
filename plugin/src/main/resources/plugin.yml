@@ -4,6 +4,10 @@ main: top.e404.edungeongenerator.EDungeonGenerator
 api-version: 1.13
 depend:
   - WorldEdit
+softdepend:
+  - MmoItems
+  - MythicMobs
+  - ItemsAdder
 authors:
   - 404E
 commands:

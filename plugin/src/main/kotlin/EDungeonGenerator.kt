@@ -2,9 +2,8 @@ package top.e404.edungeongenerator
 
 import top.e404.eplugin.EPlugin
 import top.e404.edungeongenerator.command.Commands
-import top.e404.edungeongenerator.config.Config
-import top.e404.edungeongenerator.config.DungeonManager
-import top.e404.edungeongenerator.config.Lang
+import top.e404.edungeongenerator.config.*
+import top.e404.edungeongenerator.hook.HookManager
 
 class EDungeonGenerator : EPlugin() {
     override val debugPrefix: String
@@ -23,8 +22,11 @@ class EDungeonGenerator : EPlugin() {
         PL = this
         Config.load(null)
         Lang.load(null)
+        TreasureManager.load(null)
         DungeonManager.load(null)
+        MonsterManager.load(null)
         Commands.register()
+        HookManager.register()
         info("&a加载完成")
     }
 

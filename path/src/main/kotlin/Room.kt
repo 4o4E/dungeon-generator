@@ -6,6 +6,8 @@ data class Room(
     val length: Int,
     val width: Int
 ) {
+    var height = 0
+
     fun isOverlap(other: Room) = other.left + other.length >= left - 1
             && other.top + other.width >= top - 1
             && left + length >= other.left - 1

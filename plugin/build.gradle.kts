@@ -20,24 +20,42 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/")
     // engine hub
     maven("https://maven.enginehub.org/repo/")
+    // lumine
+    maven("https://mvn.lumine.io/repository/maven/")
+    maven("https://mvn.lumine.io/repository/maven-public/")
+    // jitpack
+    maven("https://jitpack.io")
     mavenCentral()
 }
 
 dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    // serialization
+    implementation(kotlinx("serialization-core-jvm", "1.3.3"))
+    implementation(kotlinx("serialization-json", "1.3.3"))
     // path
     implementation(project(":path"))
     // eplugin
     implementation(eplugin("core"))
     implementation(eplugin("serialization"))
     implementation(eplugin("hook-worldedit"))
-    // serialization
-    implementation(kotlinx("serialization-core-jvm", "1.3.3"))
-    implementation(kotlinx("serialization-json", "1.3.3"))
+    implementation(eplugin("hook-mmoitems"))
+    implementation(eplugin("hook-mythicmobs"))
+    implementation(eplugin("hook-itemsadder"))
     // world edit
     compileOnly("com.sk89q.worldedit:worldedit-core:7.2.7")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.7")
+    // mi
+    compileOnly("net.Indyuce:MMOItems:6.7.3")
+    // mythic lib
+    compileOnly("io.lumine:MythicLib-dist:1.3.1")
+    // mm
+    compileOnly("io.lumine:Mythic-Dist:5.1.4")
+    // itemsadder
+    compileOnly("com.github.LoneDev6:api-itemsadder:3.0.0")
+    // test
+    testImplementation(kotlin("test", "1.7.20"))
 }
 
 tasks {

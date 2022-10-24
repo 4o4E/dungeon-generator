@@ -1,0 +1,27 @@
+# 地牢房间通关后生成的宝箱的战利品表
+# 包含生成的物品及其权重(总数量由地牢大小确定)
+# 在dungeon.yml中引用此配置文件的内容
+
+# 物品类型
+# mc - 原版物品
+# mi - mmoitems物品
+# mm - mythicmobs物品
+# ia - itemsadder物品
+example_treasure:
+  - type: mc
+    id: GOLDEN_APPLE
+    weight: 10
+    count: 10..20
+  - type: mi
+    category: SWORD
+    id: example
+    weight: 1
+    count: 1
+  - type: mm
+    id: example
+    weight: 1
+    count: 1
+  - type: ia
+    namespaceId: example:sword
+    weight: 1
+    count: 1

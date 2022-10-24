@@ -18,21 +18,15 @@ object Config : ESerializationConfig<ConfigData>(
         set(value) {
             config.debug = value
         }
-    val duration: Long
-        get() = config.duration
-    val push: Long
-        get() = config.push
-    val url: String
-        get() = config.url
-    val papi: List<String>
-        get() = config.papi
+    val world: String
+        get() = config.world
+    val radius: Int
+        get() = config.radius
 }
 
 @Serializable
 data class ConfigData(
     var debug: Boolean,
-    val duration: Long,
-    val push: Long,
-    val url: String,
-    val papi: List<String>,
+    val world: String,
+    val radius: Int,
 )

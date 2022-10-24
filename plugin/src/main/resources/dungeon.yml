@@ -1,3 +1,4 @@
+# 代表一个地牢设置
 example:
   # 地牢尺寸
   dungeon_length: 100
@@ -22,3 +23,15 @@ example:
   path_step: 100
   # 路径生成时每一步的最大失败次数
   path_step_fail_limit: 500
+  # 地牢各个阶段触发的指令
+  command:
+    # 进入地牢时触发
+    on_start:
+      - "%player_name%, 你已进入地牢"
+    # 进入地牢的房间时触发
+    on_enter_room:
+      - "%player_name%, 你已进入一个{room}房间"
+    # 通关房间时触发
+    on_pass_room:
+      - "%player_name%, 你已通过一个{room}房间, 已通过{pass}/{all}个"
+    #
